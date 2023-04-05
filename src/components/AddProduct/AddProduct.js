@@ -3,11 +3,13 @@ import callApi from "../../utils/apiCaller";
 import { useNavigate } from "react-router-dom";
 import { Link, useParams } from "react-router-dom";
 import { actAddProductsRequest, actUpdateProductsRequest } from "../../actions/index";
-import { connect } from "react-redux";
-
+import { useDispatch } from 'react-redux'
 
 function AddProduct(props) {
     const navigate = useNavigate();
+
+    const dispatch = useDispatch()
+
     let { id } = useParams();
 
     const [txtName, setTxtName] = useState('')
@@ -23,8 +25,8 @@ function AddProduct(props) {
                 setChkbStatus(data.status)
             })
         }
-    }, [])
 
+    }, [])
 
     const onChange = (event) => {
         var target = event.target
@@ -49,14 +51,14 @@ function AddProduct(props) {
             status: chkbStatus
         }
         if (id) {
-            props.onUpdateProduct(product)
+            dispatch(actUpdateProductsRequest(product))
             navigate('/')
         } else {
-            props.onAddProduct(product)
+            dispatch(actAddProductsRequest(product))
+
             navigate('/')
         }
     }
-
 
     return (
         <div className='col-xs-6 col-sm-6 col-md-6 col-lg-6 '>
@@ -91,15 +93,4 @@ function AddProduct(props) {
     );
 }
 
-const mapDispatchToProps = (dispatch, props) => {
-    return {
-        onAddProduct: (product) => {
-            dispatch(actAddProductsRequest(product))
-        },
-        onUpdateProduct: (product) => {
-            dispatch(actUpdateProductsRequest(product))
-        }
-    }
-}
-
-export default connect(null, mapDispatchToProps)(AddProduct);
+export default AddProduct

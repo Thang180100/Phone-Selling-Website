@@ -2,15 +2,17 @@ import ProductItem from "../ProductItem/ProductItem";
 import { useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { actDeleteProductsRequest, actFetchProductsRequest } from "../../actions/index";
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from 'react-redux'
 
 
 function ProductList(props) {
 
-    const { products } = props
+    const dispatch = useDispatch()
+
+    const products = useSelector((state) => state.products);
 
     useEffect(() => {
-        props.fetchAllProducts()
+        dispatch(actFetchProductsRequest())
     }, [])
 
     const showProducts = (products) => {
@@ -31,9 +33,8 @@ function ProductList(props) {
     }
 
     const onDelete = (id) => {
-        props.onDeleteProduct(id)
+        dispatch(actDeleteProductsRequest(id))
     }
-
 
     return (
         <div className='panel panel-primary'>
@@ -66,24 +67,4 @@ function ProductList(props) {
     );
 }
 
-const mapStateToProps = state => {
-    return {
-        products: state.products
-    }
-}
-
-const mapDispatchToProps = (dispatch, props) => {
-    return {
-        fetchAllProducts: () => {
-            dispatch(actFetchProductsRequest())
-        },
-        onDeleteProduct: (id) => {
-            dispatch(actDeleteProductsRequest(id))
-        }
-    }
-}
-
-
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProductList);
+export default ProductList;

@@ -8,7 +8,6 @@ function ProductItem(props) {
         props.onDelete(product.id)
     }
 
-
     return (
         <tr>
             <td>{index + 1}</td>
@@ -32,7 +31,5 @@ function ProductItem(props) {
     );
 
 }
-
-
 
 export default ProductItem;
